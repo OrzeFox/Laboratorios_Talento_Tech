@@ -52,11 +52,11 @@
                 super(nombre,  edad);
             }
             hablar(){
-                console.log(`${this.name} hace : Guau `);
+                console.log(`${this.nombre} hace : Guau `);
             }
-            morverse()
+            moverse()
             {
-                console.log(`${this.name} hace : El perro está corriendo `);
+                console.log(`${this.nombre} hace : El perro está corriendo `);
             }
         }
 
@@ -66,11 +66,11 @@
                 super(nombre,  edad);
             }
             hablar(){
-                console.log(`${this.name} hace : Miau`);
+                console.log(`${this.nombre} hace : Miau`);
             }
             morverse()
             {
-                console.log(`${this.name} hace : El gato está caminando sigilosamente `);
+                console.log(`${this.nombre} hace : El gato está caminando sigilosamente `);
             }
         }
 
@@ -132,4 +132,65 @@ let audi = new Vehiculo("Audi" , "A3" , "2015");
 toyota.detalles();
 audi.detalles();
 
-document.
+let firu = new Perro("Firulais" , 2);
+let felix = new Gato("Felix" , 5);
+
+let divUtil = document.getElementById("test1").innerHTML=firu.moverse();
+
+/*
+    Parte 3: Diseño y Modelado de Clases y Objetos
+    Diseño y Modelado
+    1. Explica la importancia del diseño y modelado de clases y objetos en la POO. ¿Qué beneficios 
+    aporta un buen diseño de clases y objetos?
+
+    R/ es importante ya que ayuda a mejorar el rendimiendo del hardware y el sistema y para la manutencion del codigo
+*/
+
+
+class Empleado {
+
+    constructor(nombre,timpoDeTrabajoHora){
+        this.nombre = nombre;
+        this.timpoDeTrabajoHora = timpoDeTrabajoHora;
+    }
+    calculoDeSalario(){
+        throw new Error("esto es un metodo abstracto");
+    }
+    generacionDeReportes(){
+        throw new Error("esto es un metodo abstracto");
+    }
+}
+
+class EmpleadoTiempoCompleto extends Empleado
+{
+    constructor(nombre,timpoDeTrabajoHora){
+        super(nombre,timpoDeTrabajoHora);
+    }
+    calculoDeSalario(salarioHora){
+        console.log(`el salario del empleado ${this.nombre} en este mes es:${this.timpoDeTrabajoHora * salarioHora}`);
+    }
+    generacionDeReportes(nombreReporte){
+        console.log(`el empleado ${this.nombre} genero un reporte : ${nombreReporte}`)
+    }
+}
+
+
+class EmpleadoMedioTiempo extends Empleado
+{
+    constructor(nombre,timpoDeTrabajoHora){
+        super(nombre,timpoDeTrabajoHora);
+    }
+    calculoDeSalario(salarioHora){
+        console.log(`el salario del empleado ${this.nombre} en este mes es:${this.timpoDeTrabajoHora * salarioHora}`);
+    }
+    generacionDeReportes(nombreReporte){
+        console.log(`el empleado ${this.nombre} genero un reporte : ${nombreReporte}`)
+    }
+}
+
+let diego = new EmpleadoMedioTiempo("Diego" , 100);
+
+diego.calculoDeSalario(45000);
+let julian = new EmpleadoTiempoCompleto("Julian" , 200);
+
+julian.calculoDeSalario(15000);
