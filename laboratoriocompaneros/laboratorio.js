@@ -146,51 +146,73 @@ let divUtil = document.getElementById("test1").innerHTML=firu.moverse();
     R/ es importante ya que ayuda a mejorar el rendimiendo del hardware y el sistema y para la manutencion del codigo
 */
 
+class ICalculadorSalario {
+    calcularSalario(tiempoDeTrabajoHora) {
+        throw new Error("Este método debe ser implementado");
+    }
+}
+
+class IGeneradorReporte {
+    generarReporte(empleado, nombreReporte) {
+        throw new Error("Este método debe ser implementado");
+    }
+}
+
 
 class Empleado {
-
-    constructor(nombre,timpoDeTrabajoHora){
+    constructor(nombre, tiempoDeTrabajoHora, calculadorSalario, generadorReporte) {
         this.nombre = nombre;
-        this.timpoDeTrabajoHora = timpoDeTrabajoHora;
+        this.tiempoDeTrabajoHora = tiempoDeTrabajoHora;
+        this.calculadorSalario = calculadorSalario;
+        this.generadorReporte = generadorReporte;
     }
-    calculoDeSalario(){
-        throw new Error("esto es un metodo abstracto");
+
+    obtnerSalario() {
+        return this.calculadorSalario.calcularSalario(this.tiempoDeTrabajoHora);
     }
-    generacionDeReportes(){
-        throw new Error("esto es un metodo abstracto");
+
+    generarReporte(nombreReporte) {
+        return this.generadorReporte.generarReporte(this.nombreReporte);
     }
 }
 
-class EmpleadoTiempoCompleto extends Empleado
-{
-    constructor(nombre,timpoDeTrabajoHora){
-        super(nombre,timpoDeTrabajoHora);
+class CalculadorSalarioTiempoCompleto extends ICalculadorSalario {
+    calcularSalario(tiempoDeTrabajoHora) {
+        const salarioHora = 30000; 
+        return tiempoDeTrabajoHora * salarioHora;
     }
-    calculoDeSalario(salarioHora){
-        console.log(`el salario del empleado ${this.nombre} en este mes es:${this.timpoDeTrabajoHora * salarioHora}`);
+}
+
+class CalculadorSalarioMedioTiempo extends ICalculadorSalario {
+    calcularSalario(tiempoDeTrabajoHora) {
+        const salarioHora = 15000; 
+        return tiempoDeTrabajoHora * salarioHora;
     }
-    generacionDeReportes(nombreReporte){
-        console.log(`el empleado ${this.nombre} genero un reporte : ${nombreReporte}`)
+}
+
+class GeneradorReporte extends IGeneradorReporte {
+    generarReporte(empleado, nombreReporte) {
+        console.log(`El empleado ${empleado.nombre} generó un reporte: ${nombreReporte}`);
+        console.log(`Salario: ${empleado.obtnerSalario()}`);
     }
 }
 
 
-class EmpleadoMedioTiempo extends Empleado
-{
-    constructor(nombre,timpoDeTrabajoHora){
-        super(nombre,timpoDeTrabajoHora);
-    }
-    calculoDeSalario(salarioHora){
-        console.log(`el salario del empleado ${this.nombre} en este mes es:${this.timpoDeTrabajoHora * salarioHora}`);
-    }
-    generacionDeReportes(nombreReporte){
-        console.log(`el empleado ${this.nombre} genero un reporte : ${nombreReporte}`)
+class EmpleadoTiempoCompleto extends Empleado {
+    constructor(nombre, tiempoDeTrabajoHora) {
+        super(nombre, tiempoDeTrabajoHora, new CalculadorSalarioTiempoCompleto(), new GeneradorReporte());
     }
 }
 
-let diego = new EmpleadoMedioTiempo("Diego" , 100);
+class EmpleadoMedioTiempo extends Empleado {
+    constructor(nombre, tiempoDeTrabajoHora) {
+        super(nombre, tiempoDeTrabajoHora, new CalculadorSalarioMedioTiempo(), new GeneradorReporte());
+    }
+}
 
-diego.calculoDeSalario(45000);
-let julian = new EmpleadoTiempoCompleto("Julian" , 200);
 
-julian.calculoDeSalario(15000);
+let diego = new EmpleadoMedioTiempo("Diego", 100);
+diego.generarReporte("Reporte de almacen");
+
+let julian = new EmpleadoTiempoCompleto("Julian", 200);
+julian.generarReporte("Reporte de oficina");
